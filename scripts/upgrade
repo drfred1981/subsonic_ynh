@@ -1,5 +1,6 @@
 #!/bin/bash
 
+debianversionname=$(lsb_release -a | grep Codename | awk -F' ' '{print  $2}')
 
 sudo service tomcat7 stop
 
@@ -10,6 +11,7 @@ echo "Extracting to $final_path..."
 mkdir -p ../subsonic
 sudo unzip ../subsonic.zip -d ../subsonic  > /dev/null 2>&1
 
+sudo rm -rf /var/lib/tomcat7/webapps/subsonic/
 sudo cp ../subsonic/*.war /var/lib/tomcat7/webapps/subsonic.war
 
 sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/
