@@ -5,6 +5,8 @@ domain=$1
 path=$2
 user=$3
 
+debianversionname=$(lsb_release -a | grep Codename | awk -F' ' '{print  $2}')
+
 # Check user parameter
 sudo yunohost user list --json | grep -q "\"username\": \"$user\""
 if [[ ! $? -eq 0 ]]; then
@@ -28,8 +30,8 @@ path=${path%/}
 
 # Install dependencies
 echo "Install dependencies ..."
-sudo apt-get install -y openjdk-7-jre tomcat7 lame flac faad vorbis-tools ffmpeg xsltproc
-
+[ "$debianversionname" == "wheezy" ] && sudo apt-get install -y openjdk-7-jre tomcat7 lame flac faad vorbis-tools ffmpeg xsltproc
+[ "$debianversionname" != "wheezy" ] && sudo apt-get install -y openjdk-7-jre tomcat7 lame flac faad vorbis-tools xsltproc libav-tools
 
 
 # Copy files to the right place
@@ -96,6 +98,7 @@ wget "http://localhost:8080/subsonic/rest/updateUser.view?u=admin&p=admin&commen
 wget "http://localhost:8080/subsonic/rest/updateUser.view?u=admin&p=admin&podcastArtRole=Yes&username=$user&v=$VERSION&c=myapp" > /dev/null 2>&1
 wget "http://localhost:8080/subsonic/rest/updateUser.view?u=admin&p=admin&shareArtRole=Yes&username=$user&v=$VERSION&c=myapp" > /dev/null 2>&1
 
+[ "$debianversionname" != "wheezy" ] && sleep 5 && sudo rm -f /var/subsonic/transcode/ffmpeg && sudo ln -s /usr/bin/avconv /var/subsonic/transcode/ffmpeg
 
 # Reload Nginx and regenerate SSOwat conf
 
