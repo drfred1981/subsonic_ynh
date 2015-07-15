@@ -16,3 +16,6 @@ sudo cp ../subsonic/*.war /var/lib/tomcat7/webapps/subsonic.war
 
 sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/
 sudo service tomcat7 start
+
+[ "$debianversionname" != "wheezy" ] && sleep 5 && sudo rm -f /var/subsonic/transcode/ffmpeg && sudo ln -s /usr/bin/avconv /var/subsonic/transcode/ffmpeg
+

@@ -98,6 +98,7 @@ wget "http://localhost:8080/subsonic/rest/updateUser.view?u=admin&p=admin&commen
 wget "http://localhost:8080/subsonic/rest/updateUser.view?u=admin&p=admin&podcastArtRole=Yes&username=$user&v=$VERSION&c=myapp" > /dev/null 2>&1
 wget "http://localhost:8080/subsonic/rest/updateUser.view?u=admin&p=admin&shareArtRole=Yes&username=$user&v=$VERSION&c=myapp" > /dev/null 2>&1
 
+[ "$debianversionname" != "wheezy" ] && sleep 5 && sudo rm -f /var/subsonic/transcode/ffmpeg && sudo ln -s /usr/bin/avconv /var/subsonic/transcode/ffmpeg
 
 # Reload Nginx and regenerate SSOwat conf
 
